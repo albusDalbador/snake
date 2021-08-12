@@ -1,75 +1,93 @@
 
 let direction = 115;
 
-$(document).ready( () =>{
+// let fileds = readBoard2D();
 
-    $('#start_button').on('click',() => {
 
-        
-        // setInterval(() => {
-        //     moveForward('down');
-        // }, 80);
+const fields = Array.from(document.querySelectorAll('.board_field'));
+// console.log(fields);
+ 
+
+
+// console.log($(`.snake_elem:nth-child(${2})`));
+console.log($('.snake_elem'));
+
+
+$(document).ready(() => {
+    $('.snake_elem').each(index => {
+        console.log($(this));
     })
-
-    moveForward();
 })
 
-function moveForward(direction) {
 
-    // $('#snake').css('width',)
-    // console.log($('#snake').margin());
+$(`.snake_elem`).click( () => {
+    console.log(fields.indexOf($(this).find('.snake_elem')));
+    console.log(this);
+    // $(this).css('background-color','red');
+})
 
-    // console.log(Array.from($('.snake_elem')));
+ 
+ 
+function moveElemRight(elem) {
+    // console.log(elem);
+}
 
-    for (let i = 1 ; i <= $('.snake_elem').length; i++) {
+function leftField(index) {
+    $(`.board_field:nth-child(${index})`).prev().css('background-color','orange');
+}
 
-        // console.log($(`.snake_elem:nth-child(${i})`).css('marginTop'));
+function rightField(index) {
+    $(`.board_field:nth-child(${index})`).next().css('background-color','red');
+}
 
-        $(`.snake_elem:nth-child(${i})`)
-        .css('marginTop',
-            +$(`.snake_elem:nth-child(${i})`).css('marginTop').slice(0,$(`.snake_elem:nth-child(${i})`).css('marginTop').length -2) +25 + 'px')
+function topField(index) {
+    $(`.board_field:nth-child(${index - 28})`).css('background-color','purple');
+}
 
-        console.log($(`.snake_elem:nth-child(${i})`).css('marginTop').slice(0,$(`.snake_elem:nth-child(${i})`).css('marginTop').length -2));
-        // $(`.snake_elem:nth-child(${i})`).style.marginTop = '100px';
-        // console.log($(`.snake_elem:nth-child(${i})`).css('marginTop',100));
-    }
+function bottomField(index) {
+    $(`.board_field:nth-child(${index + 28})`).css('background-color','green');
+}
 
+
+
+
+ 
+
+
+function readBoard2D() {
+    const stepArray = Array.from(document.querySelectorAll('.board_field'));
+
+    let squares2D = new Array();
     
+    while (stepArray.length) squares2D.push(stepArray.splice(0,28));
 
-    // console.log($(".snake_elem").css('marginTop'));
-
-    switch(direction) {
-        case 'up':
-            console.log('up');
-        break;
-        case 115:
-            // console.log($('snake').css);
-            // $('#snake').marginTop = $('#snake').marginTop.splice(0,$('#snake').marginTop.length - 2) + 1 + 'px;'
-        break;
-        case 'left':
-            console.log('left');
-        break;
-        case 'right':
-            console.log('right');
-        break;
-    }
+    return squares2D;
 }
 
-// readKey();
 
-function readKey() {
-    var game = setInterval(() => {
-        moveForward(direction);
-    }, 200);
+ 
+ 
 
-    $(window).keypress( (e) => {
-        console.log(e.which);
-        // direction = e.which;
-        clearInterval(game);
+ 
+ 
 
-        game = setInterval(() => {
-            moveForward(e.which);
-        }, 80);
-    })
-}
+// function readKey() {
+//     var game = setInterval(() => {
+//         moveForward(direction);
+//     }, 200);
+
+//     $(window).keypress( (e) => {
+//         console.log(e.which);
+//         // direction = e.which;
+//         clearInterval(game);
+
+//         game = setInterval(() => {
+//             moveForward(e.which);
+//         }, 80);
+//     })
+// }
+
+
+
+
 

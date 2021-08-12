@@ -1,22 +1,29 @@
 // import Element from './element';
 // import Head from './headelement';
 
+
+initBoard();
+
 initSnake();
+
 
 function initSnake(){
 
-    const snake = document.createElement('div');
-    snake.id = 'snake';
+    // const snake = document.createElement('div');
+    // snake.id = 'snake';
 
-    for (let i = 0 ; i < 3; i++) {
-        const elem = document.createElement('div');
+    for (let i = 1; i <= 1; i++) {
 
-        elem.classList.add('snake_elem');
-
-        snake.append(elem);
+        $(`.board_field:nth-child(${i})`).append('<div class="snake_elem"></div>')
     }
 
-    $('#field').append(snake);
-
-    $('.snake_elem:last').addClass('snake_head');
+     
 }
+
+function initBoard() {
+    for (let i = 0 ; i < 448; i++) {
+        // const elemt = document.createElement('')
+        $('#board').append('<div class="board_field"></div>');
+    }
+}
+
