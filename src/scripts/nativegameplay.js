@@ -1,4 +1,7 @@
 
+
+
+
 $(document).ready(() => {
 
     const fields = Array.from(document.querySelectorAll('.board_field'));
@@ -23,27 +26,27 @@ $(document).ready(() => {
         switch (e.which) { 
             case 119:
                 snakeElems = moveSnakeUp(fields,snakeElems);
-                snakeElems.forEach( item => {
-                    console.log(item);
-                })
+                // snakeElems.forEach( item => {
+                //     console.log(item);
+                // })
             break;
             case 100:
                 snakeElems = moveSnakeRight(fields,snakeElems);
-                snakeElems.forEach( item => {
-                    console.log(item);
-                })
+                // snakeElems.forEach( item => {
+                //     console.log(item);
+                // })
             break;
             case 115:
                 snakeElems = moveSnakeDown(fields,snakeElems);
-                snakeElems.forEach( item => {
-                    console.log(item);
-                })
+                // snakeElems.forEach( item => {
+                //     console.log(item);
+                // })
             break;
             case 97:
                 snakeElems = moveSnakeLeft(fields,snakeElems);
-                snakeElems.forEach( item => {
-                    console.log(item);
-                })
+                // snakeElems.forEach( item => {
+                //     console.log(item);
+                // })
             break;
             
         }
@@ -63,19 +66,19 @@ function moveSnakeUp(fields,elems) {
         // console.log(elem.parentNode);
         switch (elem.parentNode.className.split(' ')[2]) {
             case 'up':
-                moveUp(fields.indexOf(elem.parentNode) + 1)
+                moveUp(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
 
             case 'right':
-                moveRight(fields.indexOf(elem.parentNode) + 1)
+                moveRight(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
 
             case 'down':
-                moveDown(fields.indexOf(elem.parentNode) + 1)
+                moveDown(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
 
             case 'left':
-                moveLeft(fields.indexOf(elem.parentNode) + 1)
+                moveLeft(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
         }
     });
@@ -89,19 +92,19 @@ function moveSnakeRight(fields,elems) {
         // console.log(elem.parentNode);
         switch (elem.parentNode.className.split(' ')[2]) {
             case 'up':
-                moveUp(fields.indexOf(elem.parentNode) + 1)
+                moveUp(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
 
             case 'right':
-                moveRight(fields.indexOf(elem.parentNode) + 1)
+                moveRight(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
 
             case 'down':
-                moveDown(fields.indexOf(elem.parentNode) + 1)
+                moveDown(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
 
             case 'left':
-                moveLeft(fields.indexOf(elem.parentNode) + 1)
+                moveLeft(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
         }
     });
@@ -115,19 +118,19 @@ function moveSnakeDown(fields,elems) {
         // console.log(elem.parentNode);
         switch (elem.parentNode.className.split(' ')[2]) {
             case 'up':
-                moveUp(fields.indexOf(elem.parentNode) + 1)
+                moveUp(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
 
             case 'right':
-                moveRight(fields.indexOf(elem.parentNode) + 1)
+                moveRight(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
 
             case 'down':
-                moveDown(fields.indexOf(elem.parentNode) + 1)
+                moveDown(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
 
             case 'left':
-                moveLeft(fields.indexOf(elem.parentNode) + 1)
+                moveLeft(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
         }
     });
@@ -141,19 +144,19 @@ function moveSnakeLeft(fields,elems) {
         // console.log(elem.parentNode);
         switch (elem.parentNode.className.split(' ')[2]) {
             case 'up':
-                moveUp(fields.indexOf(elem.parentNode) + 1)
+                moveUp(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
 
             case 'right':
-                moveRight(fields.indexOf(elem.parentNode) + 1)
+                moveRight(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
 
             case 'down':
-                moveDown(fields.indexOf(elem.parentNode) + 1)
+                moveDown(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
 
             case 'left':
-                moveLeft(fields.indexOf(elem.parentNode) + 1)
+                moveLeft(fields.indexOf(elem.parentNode) + 1,elem,fields)
             break;
         }
     });
@@ -191,47 +194,63 @@ function addUpTurn() {
 
 //basic moving functions
 
-function moveUp (snakePosition) {
+function moveUp (snakePosition, elem,fields) {
+
+
     const nextInd = snakePosition - 28;
 
     $('#board div').removeClass('prev_step');
     $(`.board_field:nth-child(${snakePosition})`).addClass('prev_step');
 
     if (nextInd > 0) {
-        $(`.board_field:nth-child(${nextInd})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
-        
+        // $(`.board_field:nth-child(${nextInd})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+
+        elem.remove()
+        // fields[nextInd-1].append(elem);
+
         checkIfApple(nextInd);
         return nextInd;
     }
     else {
-        $(`.board_field:nth-child(${nextInd + 448})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        // $(`.board_field:nth-child(${nextInd + 448})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
         
+        // fields[snakePosition-1].removeChild(elem);
+
+        elem.remove();
+        // fields[nextInd+447].append(elem);
+
         checkIfApple(nextInd + 448);
         return nextInd + 448;
     }
 }
 
-function moveRight(snakePosition) {
+function moveRight(snakePosition, elem,fields) {
     const nextInd = snakePosition + 1;
 
     $('#board div').removeClass('prev_step');
     $(`.board_field:nth-child(${snakePosition})`).addClass('prev_step');
 
     if ( (nextInd - 1) % 28 != 0) {
-        $(`.board_field:nth-child(${nextInd})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        // $(`.board_field:nth-child(${nextInd})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
         
+        fields[snakePosition-1].removeChild(elem);
+        fields[nextInd-1].append(elem);
+
         checkIfApple(nextInd);
         return nextInd;
     }
     else {
-        $(`.board_field:nth-child(${nextInd - 28})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        // $(`.board_field:nth-child(${nextInd - 28})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+
+        fields[snakePosition-1].removeChild(elem);
+        fields[nextInd-1-28].append(elem);
 
         checkIfApple(nextInd -28);
         return nextInd - 28;
     }
 }
 
-function moveDown(snakePosition) {
+function moveDown(snakePosition, elem,fields) {
     const nextInd = snakePosition + 28;
 
     // console.log('move Down')
@@ -240,20 +259,26 @@ function moveDown(snakePosition) {
     $(`.board_field:nth-child(${snakePosition})`).addClass('prev_step');
 
     if (nextInd <= 448) {
-        $(`.board_field:nth-child(${nextInd})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        // $(`.board_field:nth-child(${nextInd})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
         
+        fields[snakePosition-1].removeChild(elem);
+        fields[nextInd-1].append(elem);
+
         checkIfApple(nextInd);
         return nextInd;
     }
     else {
-        $(`.board_field:nth-child(${nextInd - 448})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        // $(`.board_field:nth-child(${nextInd - 448})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
         
+        fields[snakePosition-1].removeChild(elem);
+        fields[nextInd-449].append(elem);
+
         checkIfApple(nextInd -448);
         return nextInd - 448;
     }
 }
 
-function moveLeft(snakePosition) {
+function moveLeft(snakePosition, elem,fields) {
     const nextInd = snakePosition - 1;
 
     $('#board div').removeClass('prev_step');
@@ -261,14 +286,20 @@ function moveLeft(snakePosition) {
 
 
     if (nextInd % 28 != 0) {
-        $(`.board_field:nth-child(${nextInd})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        // $(`.board_field:nth-child(${nextInd})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
         
+        fields[snakePosition-1].removeChild(elem);
+        fields[nextInd-1].append(elem);
+
         checkIfApple(nextInd)
         return nextInd;
     }
     else {
-        $(`.board_field:nth-child(${nextInd + 28})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        // $(`.board_field:nth-child(${nextInd + 28})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
         
+        fields[snakePosition-1].removeChild(elem);
+        fields[nextInd-1+28].append(elem);
+
         checkIfApple(nextInd+28)
         return nextInd + 28;
     }
@@ -296,15 +327,14 @@ function generateFreeFieldIndex(snakeIndex) {
 }
 
 function checkIfApple(snakePosition) {
-    // console.log(snakePosition);
 
-    if ($(`.board_field:nth-child(${snakePosition})`).children().length == 2) {
+    if ($(`.board_field:nth-child(${snakePosition})`).find($('#apple'))) {
+
         increaseScore();
 
         extendSnake();
 
         $('#apple').remove();
-        console.log('here');
 
         addApple(snakePosition);
     }
