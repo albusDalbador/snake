@@ -5,14 +5,14 @@ $(document).ready(() => {
 
     let snakePosition = 1;
 
+    let snakeElems = Array.from(document.querySelectorAll('.snake_elem'));
+    // console.log(snakeElems);
+
     let moving;
     
     $('#start_button').click(() => {
 
-        moving = setInterval(() => {
-            snakePosition = moveRight(snakePosition);
-        }, 175);
-    
+         
         addApple(snakePosition);
 
         $('#start_button').prop('disabled', true);
@@ -22,57 +22,190 @@ $(document).ready(() => {
 
         switch (e.which) { 
             case 119:
-                clearInterval(moving);
-                moving = setInterval(() => {
-                    snakePosition = moveUp(snakePosition);
-                }, 175);
-                // snakePosition = moveUp(snakePosition);
+                snakeElems = moveSnakeUp(fields,snakeElems);
+                snakeElems.forEach( item => {
+                    console.log(item);
+                })
             break;
             case 100:
-                clearInterval(moving);
-                moving = setInterval(() => {
-                    snakePosition = moveRight(snakePosition);
-                }, 175);
-                // snakePosition = moveRight(snakePosition);
+                snakeElems = moveSnakeRight(fields,snakeElems);
+                snakeElems.forEach( item => {
+                    console.log(item);
+                })
             break;
             case 115:
-                clearInterval(moving);
-                moving = setInterval(() => {
-                    snakePosition = moveDown(snakePosition);
-                }, 175);
-                // snakePosition = moveDown(snakePosition);
+                snakeElems = moveSnakeDown(fields,snakeElems);
+                snakeElems.forEach( item => {
+                    console.log(item);
+                })
             break;
             case 97:
-                clearInterval(moving);
-                moving = setInterval(() => {
-                    snakePosition = moveLeft(snakePosition);
-                }, 175);
-                // snakePosition = moveLeft(snakePosition);
+                snakeElems = moveSnakeLeft(fields,snakeElems);
+                snakeElems.forEach( item => {
+                    console.log(item);
+                })
             break;
             
         }
 
-        checkIfApple(snakePosition);
+        // checkIfApple(snakePosition);
 
     })
 })
 
 
+//advanced moving functions
 
-//moving functions
+function moveSnakeUp(fields,elems) {
+    addUpTurn();
+
+    elems.forEach(elem => {
+        // console.log(elem.parentNode);
+        switch (elem.parentNode.className.split(' ')[2]) {
+            case 'up':
+                moveUp(fields.indexOf(elem.parentNode) + 1)
+            break;
+
+            case 'right':
+                moveRight(fields.indexOf(elem.parentNode) + 1)
+            break;
+
+            case 'down':
+                moveDown(fields.indexOf(elem.parentNode) + 1)
+            break;
+
+            case 'left':
+                moveLeft(fields.indexOf(elem.parentNode) + 1)
+            break;
+        }
+    });
+    return Array.from(document.querySelectorAll('.snake_elem'));
+}
+
+function moveSnakeRight(fields,elems) {
+    addRightTurn();
+
+    elems.forEach(elem => {
+        // console.log(elem.parentNode);
+        switch (elem.parentNode.className.split(' ')[2]) {
+            case 'up':
+                moveUp(fields.indexOf(elem.parentNode) + 1)
+            break;
+
+            case 'right':
+                moveRight(fields.indexOf(elem.parentNode) + 1)
+            break;
+
+            case 'down':
+                moveDown(fields.indexOf(elem.parentNode) + 1)
+            break;
+
+            case 'left':
+                moveLeft(fields.indexOf(elem.parentNode) + 1)
+            break;
+        }
+    });
+    return Array.from(document.querySelectorAll('.snake_elem'));
+}
+
+function moveSnakeDown(fields,elems) {
+    addDownTurn();
+
+    elems.forEach(elem => {
+        // console.log(elem.parentNode);
+        switch (elem.parentNode.className.split(' ')[2]) {
+            case 'up':
+                moveUp(fields.indexOf(elem.parentNode) + 1)
+            break;
+
+            case 'right':
+                moveRight(fields.indexOf(elem.parentNode) + 1)
+            break;
+
+            case 'down':
+                moveDown(fields.indexOf(elem.parentNode) + 1)
+            break;
+
+            case 'left':
+                moveLeft(fields.indexOf(elem.parentNode) + 1)
+            break;
+        }
+    });
+    return Array.from(document.querySelectorAll('.snake_elem'));
+}
+
+function moveSnakeLeft(fields,elems) {
+    addLeftTurn();
+
+    elems.forEach(elem => {
+        // console.log(elem.parentNode);
+        switch (elem.parentNode.className.split(' ')[2]) {
+            case 'up':
+                moveUp(fields.indexOf(elem.parentNode) + 1)
+            break;
+
+            case 'right':
+                moveRight(fields.indexOf(elem.parentNode) + 1)
+            break;
+
+            case 'down':
+                moveDown(fields.indexOf(elem.parentNode) + 1)
+            break;
+
+            case 'left':
+                moveLeft(fields.indexOf(elem.parentNode) + 1)
+            break;
+        }
+    });
+    return Array.from(document.querySelectorAll('.snake_elem'));
+}
+
+
+
+//snake turn functions
+
+function addRightTurn() {
+    $('.board_field:empty').removeClass('turn right down left up');
+    $('#apple').parent().removeClass('turn right down left up')
+    $('.snake_elem, .head').parent().addClass('turn right');
+}
+
+function addDownTurn() {
+    $('.board_field:empty').removeClass('turn right down left up');
+    $('#apple').parent().removeClass('turn right down left up')
+    $('.snake_elem, .head').parent().addClass('turn down');
+}
+
+function addLeftTurn() {
+    $('.board_field:empty').removeClass('turn right down left up');
+    $('#apple').parent().removeClass('turn right down left up')
+    $('.snake_elem, .head').parent().addClass('turn left');
+}
+
+function addUpTurn() {
+    $('.board_field:empty').removeClass('turn right down left up');
+    $('#apple').parent().removeClass('turn right down left up')
+    $('.snake_elem, .head').parent().addClass('turn up');
+}
+
+
+//basic moving functions
 
 function moveUp (snakePosition) {
-
     const nextInd = snakePosition - 28;
 
+    $('#board div').removeClass('prev_step');
+    $(`.board_field:nth-child(${snakePosition})`).addClass('prev_step');
 
     if (nextInd > 0) {
-        $(`.board_field:nth-child(${nextInd})`).append($('.snake_elem'));
+        $(`.board_field:nth-child(${nextInd})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        
         checkIfApple(nextInd);
         return nextInd;
     }
     else {
-        $(`.board_field:nth-child(${nextInd + 448})`).append($('.snake_elem'));
+        $(`.board_field:nth-child(${nextInd + 448})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        
         checkIfApple(nextInd + 448);
         return nextInd + 448;
     }
@@ -81,13 +214,18 @@ function moveUp (snakePosition) {
 function moveRight(snakePosition) {
     const nextInd = snakePosition + 1;
 
+    $('#board div').removeClass('prev_step');
+    $(`.board_field:nth-child(${snakePosition})`).addClass('prev_step');
+
     if ( (nextInd - 1) % 28 != 0) {
-        $(`.board_field:nth-child(${nextInd})`).append($('.snake_elem'));
+        $(`.board_field:nth-child(${nextInd})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        
         checkIfApple(nextInd);
         return nextInd;
     }
     else {
-        $(`.board_field:nth-child(${nextInd - 28})`).append($('.snake_elem'));
+        $(`.board_field:nth-child(${nextInd - 28})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+
         checkIfApple(nextInd -28);
         return nextInd - 28;
     }
@@ -96,13 +234,20 @@ function moveRight(snakePosition) {
 function moveDown(snakePosition) {
     const nextInd = snakePosition + 28;
 
-    if (nextInd < 448) {
-        $(`.board_field:nth-child(${nextInd})`).append($('.snake_elem'));
+    // console.log('move Down')
+
+    $('#board div').removeClass('prev_step');
+    $(`.board_field:nth-child(${snakePosition})`).addClass('prev_step');
+
+    if (nextInd <= 448) {
+        $(`.board_field:nth-child(${nextInd})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        
         checkIfApple(nextInd);
         return nextInd;
     }
     else {
-        $(`.board_field:nth-child(${nextInd - 448})`).append($('.snake_elem'));
+        $(`.board_field:nth-child(${nextInd - 448})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        
         checkIfApple(nextInd -448);
         return nextInd - 448;
     }
@@ -111,14 +256,19 @@ function moveDown(snakePosition) {
 function moveLeft(snakePosition) {
     const nextInd = snakePosition - 1;
 
+    $('#board div').removeClass('prev_step');
+    $(`.board_field:nth-child(${snakePosition})`).addClass('prev_step');
+
 
     if (nextInd % 28 != 0) {
-        $(`.board_field:nth-child(${nextInd})`).append($('.snake_elem'));
+        $(`.board_field:nth-child(${nextInd})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        
         checkIfApple(nextInd)
         return nextInd;
     }
     else {
-        $(`.board_field:nth-child(${nextInd + 28})`).append($('.snake_elem'));
+        $(`.board_field:nth-child(${nextInd + 28})`).append($(`.board_field:nth-child(${snakePosition})`).find('.snake_elem'));
+        
         checkIfApple(nextInd+28)
         return nextInd + 28;
     }
@@ -146,13 +296,17 @@ function generateFreeFieldIndex(snakeIndex) {
 }
 
 function checkIfApple(snakePosition) {
+    // console.log(snakePosition);
+
     if ($(`.board_field:nth-child(${snakePosition})`).children().length == 2) {
         increaseScore();
+
+        extendSnake();
 
         $('#apple').remove();
         console.log('here');
 
-        addApple();
+        addApple(snakePosition);
     }
 }
 
@@ -163,20 +317,25 @@ function generateAppleColor() {
 }
 
 
+//snake manipulation
+
+function extendSnake() {    
+    $('.snake_elem, .tail').removeClass('tail');
+    $('.prev_step:empty').append('<div class="snake_elem tail" ></div>');
+    $('.prev_step').removeClass('prev_step');
+}
+
+
+
 
 // the rest stuff
 
 function increaseScore() {
+    // console.log($('#apple'));
     $('#score_value').text( () => {
         return +$('#score_value').text() +1;
     })
 }
-
-function extendSnake() {    
-    
-}
-
-
 
 
 
