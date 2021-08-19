@@ -3,15 +3,22 @@ $(document).ready(() => {
 
     const fields = Array.from(document.querySelectorAll('.board_field'));
 
+    let snakeElems = Array.from(document.querySelectorAll('.snake_elem')).reverse();
+
     let snakePosition = 1;
 
-    let moving;
+    // let moving;
     
     $('#start_button').click(() => {
 
+        snakeElems.forEach(item => {
+            item.parentNode.classList.add('right');
+            // console.log(item.parentNode.classList);
+        });
+
         moving = setInterval(() => {
-            snakePosition = moveRight(snakePosition);
-        }, 175);
+            snakeElems  = moveSnake(snakeElems,fields);
+        }, 200);
     
         addApple(snakePosition);
 
@@ -22,58 +29,98 @@ $(document).ready(() => {
 
         switch (e.which) { 
             case 119:
-                clearInterval(moving);
-                moving = setInterval(() => {
-                    snakePosition = moveUp(snakePosition);
-                }, 175);
-                // snakePosition = moveUp(snakePosition);
+                addUpDirection();
             break;
             case 100:
-                clearInterval(moving);
-                moving = setInterval(() => {
-                    snakePosition = moveRight(snakePosition);
-                }, 175);
-                // snakePosition = moveRight(snakePosition);
+                addRightDirection();
             break;
             case 115:
-                clearInterval(moving);
-                moving = setInterval(() => {
-                    snakePosition = moveDown(snakePosition);
-                }, 175);
-                // snakePosition = moveDown(snakePosition);
+                addDownDirection();
             break;
             case 97:
-                clearInterval(moving);
-                moving = setInterval(() => {
-                    snakePosition = moveLeft(snakePosition);
-                }, 175);
-                // snakePosition = moveLeft(snakePosition);
+                addLeftDirection();
             break;
             
         }
 
-        checkIfApple(snakePosition);
+        // checkIfApple(snakePosition);
 
     })
 })
 
 
 
-//moving functions
+
+function moveSnake(snakeElems,fields) {
+
+    // console.log(snakeElems);
+
+    snakeElems.forEach(item => {
+    // console.log(item.parentNode.className);
+        // console.log(item.parentNode.className);
+        switch(item.parentNode.className.split(' ')[1]) {
+            case 'up':
+                moveUp(fields.indexOf(item.parentNode) + 1);
+                if (item.classList.contains('head')) addUpDirection();
+            break;
+            case 'right':
+                moveRight(fields.indexOf(item.parentNode) + 1);
+                if (item.classList.contains('head')) addRightDirection();
+            break;
+            case 'down':
+                moveDown(fields.indexOf(item.parentNode) + 1);
+                if (item.classList.contains('head')) addDownDirection();
+            break;
+            case 'left':
+                moveLeft(fields.indexOf(item.parentNode) + 1);
+                if (item.classList.contains('head')) addLeftDirection();
+            break;
+        }
+    })
+
+    const resp = Array.from(document.querySelectorAll('.snake_elem'))
+
+    return resp;
+
+}
+
+
+
+//#region moving elementary functions
 
 function moveUp (snakePosition) {
 
     const nextInd = snakePosition - 28;
 
+    $('.board_field:empty').removeClass('previous');
+    $(`.board_field:nth-child(${snakePosition})`).addClass('up previous');
 
     if (nextInd > 0) {
-        $(`.board_field:nth-child(${nextInd})`).append($('.snake_elem'));
+
+        if ($(`.board_field:nth-child(${snakePosition}) .snake_elem`).first().hasClass('head')){
+            $(`.board_field:nth-child(${nextInd})`).append('<div class="snake_elem head"></div>');
+        } else {
+            $(`.board_field:nth-child(${nextInd})`).append('<div class="snake_elem"></div>');
+        }
+
+        $(`.board_field:nth-child(${snakePosition}) .snake_elem:first`).remove();
+
         checkIfApple(nextInd);
+
         return nextInd;
     }
     else {
-        $(`.board_field:nth-child(${nextInd + 448})`).append($('.snake_elem'));
+
+        if ($(`.board_field:nth-child(${snakePosition}) .snake_elem`).first().hasClass('head')){
+            $(`.board_field:nth-child(${nextInd + 448})`).append('<div class="snake_elem head"></div>');
+        } else {
+            $(`.board_field:nth-child(${nextInd + 448})`).append('<div class="snake_elem"></div>');
+        }
+
+        $(`.board_field:nth-child(${snakePosition}) .snake_elem:first`).remove();
+
         checkIfApple(nextInd + 448);
+
         return nextInd + 448;
     }
 }
@@ -81,14 +128,36 @@ function moveUp (snakePosition) {
 function moveRight(snakePosition) {
     const nextInd = snakePosition + 1;
 
+    // $('.board_field:empty').removeClass('previous');
+    $(`.board_field:nth-child(${snakePosition})`).addClass('right previous');
+
+
     if ( (nextInd - 1) % 28 != 0) {
-        $(`.board_field:nth-child(${nextInd})`).append($('.snake_elem'));
+        if ($(`.board_field:nth-child(${snakePosition}) .snake_elem`).first().hasClass('head')){
+
+            $(`.board_field:nth-child(${nextInd})`).append('<div class="snake_elem head"></div>');
+        } else {
+            $(`.board_field:nth-child(${nextInd})`).append('<div class="snake_elem"></div>');
+        }
+
+        $(`.board_field:nth-child(${snakePosition}) .snake_elem:first`).remove();
+
         checkIfApple(nextInd);
+
         return nextInd;
     }
     else {
-        $(`.board_field:nth-child(${nextInd - 28})`).append($('.snake_elem'));
+
+        if ($(`.board_field:nth-child(${snakePosition}) .snake_elem`).first().hasClass('head')){
+            $(`.board_field:nth-child(${nextInd - 28})`).append('<div class="snake_elem head"></div>');
+        } else {
+            $(`.board_field:nth-child(${nextInd - 28})`).append('<div class="snake_elem"></div>');
+        }
+
+        $(`.board_field:nth-child(${snakePosition}) .snake_elem:first`).remove();
+
         checkIfApple(nextInd -28);
+
         return nextInd - 28;
     }
 }
@@ -96,14 +165,41 @@ function moveRight(snakePosition) {
 function moveDown(snakePosition) {
     const nextInd = snakePosition + 28;
 
+    $('.board_field:empty').removeClass('previous');
+    $(`.board_field:nth-child(${snakePosition})`).addClass('down previous');
+
     if (nextInd < 448) {
-        $(`.board_field:nth-child(${nextInd})`).append($('.snake_elem'));
+        // $(`.board_field:nth-child(${nextInd})`).append($('.snake_elem'));
+
+        if ($(`.board_field:nth-child(${snakePosition}) .snake_elem`).first().hasClass('head')){
+            $(`.board_field:nth-child(${nextInd})`).append('<div class="snake_elem head"></div>');
+        } else {
+            $(`.board_field:nth-child(${nextInd})`).append('<div class="snake_elem"></div>');
+        }
+
+        $(`.board_field:nth-child(${snakePosition}) .snake_elem:first`).remove();
+
+        // $(`.board_field:nth-child(${nextInd})`).append('<div class="snake_elem"></div>');
+
         checkIfApple(nextInd);
+
         return nextInd;
     }
     else {
-        $(`.board_field:nth-child(${nextInd - 448})`).append($('.snake_elem'));
+        // $(`.board_field:nth-child(${nextInd - 448})`).append($('.snake_elem'));
+
+        if ($(`.board_field:nth-child(${snakePosition}) .snake_elem`).first().hasClass('head')){
+            $(`.board_field:nth-child(${nextInd - 448})`).append('<div class="snake_elem head"></div>');
+        } else {
+            $(`.board_field:nth-child(${nextInd - 448})`).append('<div class="snake_elem"></div>');
+        }
+
+        $(`.board_field:nth-child(${snakePosition}) .snake_elem:first`).remove();
+
+        // $(`.board_field:nth-child(${nextInd - 448})`).append('<div class="snake_elem"></div>');
+
         checkIfApple(nextInd -448);
+
         return nextInd - 448;
     }
 }
@@ -111,21 +207,71 @@ function moveDown(snakePosition) {
 function moveLeft(snakePosition) {
     const nextInd = snakePosition - 1;
 
+    $('.board_field:empty').removeClass('previous');
+    $(`.board_field:nth-child(${snakePosition})`).addClass('left previous');
+
 
     if (nextInd % 28 != 0) {
-        $(`.board_field:nth-child(${nextInd})`).append($('.snake_elem'));
-        checkIfApple(nextInd)
+
+        if ($(`.board_field:nth-child(${snakePosition}) .snake_elem`).first().hasClass('head')){
+            $(`.board_field:nth-child(${nextInd})`).append('<div class="snake_elem head"></div>');
+        } else {
+            $(`.board_field:nth-child(${nextInd})`).append('<div class="snake_elem"></div>');
+        }
+
+        $(`.board_field:nth-child(${snakePosition}) .snake_elem:first`).remove();
+        checkIfApple(nextInd);
+
         return nextInd;
     }
     else {
-        $(`.board_field:nth-child(${nextInd + 28})`).append($('.snake_elem'));
+
+        if ($(`.board_field:nth-child(${snakePosition}) .snake_elem`).first().hasClass('head')){
+            $(`.board_field:nth-child(${nextInd + 28})`).append('<div class="snake_elem head"></div>');
+        } else {
+            $(`.board_field:nth-child(${nextInd + 28})`).append('<div class="snake_elem"></div>');
+        }
+
+        $(`.board_field:nth-child(${snakePosition}) .snake_elem:first`).remove();
+
         checkIfApple(nextInd+28)
+
         return nextInd + 28;
     }
 }
 
+//#endregion
 
-//apple functions
+
+//#region  whole snake moving functions
+
+function addUpDirection() {
+    $('.head').parent().removeClass('up down left right');
+    $('.head').parent().addClass('up');
+}
+
+function addRightDirection() {
+    // console.log('here');
+    $('.head').parent().removeClass('up down left right');
+    $('.head').parent().addClass('right');
+}
+
+function addDownDirection() {
+    $('.head').parent().removeClass('up down left right');
+    $('.head').parent().addClass('down');
+}
+
+function addLeftDirection() {
+    $('.head').parent().removeClass('up down left right');
+    $('.head').parent().addClass('left');
+}
+
+//#endregion
+
+
+
+
+//#region  apple functions
 
 function addApple(snakeIndex) {
 
@@ -145,22 +291,27 @@ function generateFreeFieldIndex(snakeIndex) {
     return snakeIndex == index ? generateFreeFieldIndex(snakeIndex) : index;
 }
 
-function checkIfApple(snakePosition) {
-    if ($(`.board_field:nth-child(${snakePosition})`).children().length == 2) {
-        increaseScore();
-
-        $('#apple').remove();
-        console.log('here');
-
-        addApple();
-    }
-}
-
 function generateAppleColor() {
     const color  = Math.floor(Math.random()*16777215);
 
     return color > 1777215 ? color.toString(16) : generateAppleColor();
 }
+
+function checkIfApple() {
+    if ($('#apple').parent().children().length == 2) {
+        increaseScore();
+
+        $('#apple').remove();
+        // console.log('here');
+
+        addApple();
+
+        extendSnake();
+    }
+}
+
+//#endregion
+
 
 
 
@@ -172,27 +323,13 @@ function increaseScore() {
     })
 }
 
-function extendSnake() {    
-    
+function extendSnake() { 
+    console.log('extended');
+    $('.previous:empty').append('<div class="snake_elem"></div>');
+    $('.previous').removeClass('previous')
 }
 
 
 
 
-
-//functions returning fields
-function leftField(index) {
-    $(`.board_field:nth-child(${index})`).prev().css('background-color','orange');
-}
-
-function rightField(index) {
-    $(`.board_field:nth-child(${index})`).next().css('background-color','red');
-}
-
-function topField(index) {
-    $(`.board_field:nth-child(${index - 28})`).css('background-color','purple');
-}
-
-function bottomField(index) {
-    $(`.board_field:nth-child(${index + 28})`).css('background-color','green');
-}
+ 

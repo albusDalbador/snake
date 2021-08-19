@@ -12,11 +12,12 @@ function initSnake(){
     // const snake = document.createElement('div');
     // snake.id = 'snake';
 
-    for (let i = 1; i <= 1; i++) {
+    for (let i = 1; i <= 2; i++) {
 
-        $(`.board_field:nth-child(${i})`).append('<div class="snake_elem"></div>')
+        $(`.board_field:nth-child(${i})`).append('<div class="snake_elem "></div>')
     }
 
+    $(`.board_field:nth-child(${3})`).append('<div class="snake_elem head"></div>')
      
 }
 
