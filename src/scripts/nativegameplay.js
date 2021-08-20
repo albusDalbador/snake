@@ -54,6 +54,7 @@ $(document).ready(() => {
 function moveSnake(snakeElems,fields) {
 
     // console.log(snakeElems);
+    $('.board_field:empty').removeClass('previous');
 
     snakeElems.forEach(item => {
     // console.log(item.parentNode.className);
@@ -78,6 +79,7 @@ function moveSnake(snakeElems,fields) {
         }
     })
 
+
     const resp = Array.from(document.querySelectorAll('.snake_elem'))
 
     return resp;
@@ -92,7 +94,7 @@ function moveUp (snakePosition) {
 
     const nextInd = snakePosition - 28;
 
-    $('.board_field:empty').removeClass('previous');
+    // $('.board_field:empty').removeClass('previous');
     $(`.board_field:nth-child(${snakePosition})`).addClass('up previous');
 
     if (nextInd > 0) {
@@ -165,7 +167,7 @@ function moveRight(snakePosition) {
 function moveDown(snakePosition) {
     const nextInd = snakePosition + 28;
 
-    $('.board_field:empty').removeClass('previous');
+    // $('.board_field:empty').removeClass('previous');
     $(`.board_field:nth-child(${snakePosition})`).addClass('down previous');
 
     if (nextInd < 448) {
@@ -207,7 +209,7 @@ function moveDown(snakePosition) {
 function moveLeft(snakePosition) {
     const nextInd = snakePosition - 1;
 
-    $('.board_field:empty').removeClass('previous');
+    // $('.board_field:empty').removeClass('previous');
     $(`.board_field:nth-child(${snakePosition})`).addClass('left previous');
 
 
@@ -315,7 +317,7 @@ function checkIfApple() {
 
 
 
-// the rest stuff
+//#region gameplay
 
 function increaseScore() {
     $('#score_value').text( () => {
@@ -329,6 +331,14 @@ function extendSnake() {
     $('.previous').removeClass('previous')
 }
 
+
+function endGame(moving) {
+    clearImmediate(moving);
+
+    alert("it seem's you've lost");
+}
+
+//#endregion
 
 
 
