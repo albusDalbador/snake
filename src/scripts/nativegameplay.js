@@ -7,8 +7,6 @@ $(document).ready(() => {
 
     let snakePosition = 1;
 
-    // let moving;
-    
     $('#start_button').click(() => {
 
         snakeElems.forEach(item => {
@@ -301,6 +299,8 @@ function generateAppleColor() {
 
 function checkIfApple() {
     if ($('#apple').parent().children().length == 2) {
+        extendSnake();
+
         increaseScore();
 
         $('#apple').remove();
@@ -308,7 +308,6 @@ function checkIfApple() {
 
         addApple();
 
-        extendSnake();
     }
 }
 
