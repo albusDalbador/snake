@@ -1,5 +1,5 @@
 # Simple snake with jquery
-Don't waste your time for that stuff...  If you're interested, it looks like this:
+If you're interested, it looks like this:
 
 ![alt text](https://github.com/albusDalbador/snake/blob/working-version/src/img/snakeImage.png?raw=true)
 
