@@ -26,7 +26,7 @@ $(document).ready(() => {
 
         setInterval(() => {
             snakeElems  = moveSnake(snakeElems,fields);
-        }, 200);
+        }, 50);
         
         addApple(1);
 
