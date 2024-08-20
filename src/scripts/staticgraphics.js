@@ -9,7 +9,7 @@ export function initSnake(){
 }
 
 export function initBoard() {
-    for (let i = 0 ; i < 448; i++) {
+    for (let i = 0 ; i < 600; i++) {
         $('#board').append('<div class="board_field"></div>');
     }
 }
