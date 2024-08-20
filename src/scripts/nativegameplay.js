@@ -16,7 +16,7 @@ $(document).ready(() => {
 
         moving = setInterval(() => {
             snakeElems  = moveSnake(snakeElems,fields);
-        }, 200);
+        }, 50);
     
         addApple(snakePosition);
 
